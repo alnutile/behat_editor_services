@@ -1,5 +1,9 @@
 <?php namespace BehatEditorServices;
 
-class BehatEditorSitesController {
+class BehatEditorSitesController extends BaseController {
 
+    public function retrieve()
+    {
+
+    }
 }

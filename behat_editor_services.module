@@ -157,6 +157,7 @@ function behat_editor_services_rest() {
     $args = func_get_args();
     $method                          =   strtolower($request_type);
     $method                         .=   'Sites';
+    $request                         =   $_REQUEST;
     switch($request_type) {
         case 'GET':
             if($args[1] != NULL) {
@@ -172,22 +173,21 @@ function behat_editor_services_rest() {
             }
             break;
         case 'POST':
-            var_dump("Time to POST");
+            if($args[1] != NULL) {
+                $method           .=  ucwords($args[1]);
+                if($args[2] != NULL) {
+                    if($args[3] != NULL) {
+                        $method   .=  ucwords($args[3]);
+                    }
+                }
+            }
             break;
         default:
             var_dump("No clue");
     }
-    //2. figure out the resource
-    var_dump("Request Type " . $request_type);
-    var_dump($args);
-    var_dump("Request");
-    var_dump($_REQUEST);
-    var_dump("Final Method");
-    var_dump($method);
+    $route = new BehatEditorServices\BehatEditorRoutes();
+    $output = $route->$method($args, $request);
 
-    $reflectionMethod = new ReflectionMethod('\BehatEditorServices\BehatEditorRoutes', $method);
-    $reflectionMethod->invoke(new \BehatEditorServices\BehatEditorRoutes( new \BehatEditorServices\BehatEditorSitesController), $args);
-
-    drupal_json_output(array(1, 2, 3));
+    drupal_json_output($output);
     exit();
 }

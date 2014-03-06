@@ -3,6 +3,9 @@
 use BehatEditorServices\BehatEditorSitesController;
 use BehatEditorServices\BehatEditorReportsController;
 use BehatEditorServices\BehatEditorTestsController;
+use BehatEditorServices\BehatEditorTokensController;
+use BehatEditorServices\BehatEditorTagsController;
+use BehatEditorServices\BehatEditorBatchesController;
 
 class BehatEditorRoutes {
 
@@ -16,12 +19,12 @@ class BehatEditorRoutes {
 
     public function __construct($sitesController = null, $testsController = null, $reportsController = null, $batchesController = null, $tagsController = null, $tokensController = null)
     {
-        $this->sitesController          = ($sitesController   == null) ? new BehatEditorSitesController()   : $sitesController;
-        $this->testsController          = ($testsController   == null) ? new BehatEditorTestsController()   : $testsController;
-        $this->reportsController        = ($reportsController == null) ? new BehatEditorReportsController() : $reportsController;
-        $this->batchesController        = ($batchesController == null) ? new BehatEditorReportsController() : $batchesController;
-        $this->tagsController           = ($tagsController    == null) ? new BehatEditorTagsController()    : $tagsController;
-        $this->tokensController         = ($tokensController == null)  ? new BehatEditorTokensController()  : $tokensController;
+        $this->sitesController          = ($sitesController   == null)  ? new BehatEditorSitesController()   : $sitesController;
+        $this->testsController          = ($testsController   == null)  ? new BehatEditorTestsController()   : $testsController;
+        $this->reportsController        = ($reportsController == null)  ? new BehatEditorReportsController() : $reportsController;
+        $this->batchesController        = ($batchesController == null)  ? new BehatEditorReportsController() : $batchesController;
+        $this->tagsController           = ($tagsController    == null)  ? new BehatEditorTagsController()    : $tagsController;
+        $this->tokensController         = ($tokensController  == null)  ? new BehatEditorTokensController()  : $tokensController;
     }
 
     public function getSites(array $params = null)
@@ -29,7 +32,7 @@ class BehatEditorRoutes {
         if($params[0] == null) {
             return $this->sitesController->index();
         } else {
-            return $this->sitesController->getSite($params[0]);
+            return $this->sitesController->retrieve($params[0]);
         }
     }
 
@@ -48,7 +51,7 @@ class BehatEditorRoutes {
         if($params[2] == null) {
             return $this->testsController->index($site_object, $params);
         } else {
-            return $this->testsController->getTest($site_object, $params);
+            return $this->testsController->retrieve($site_object, $params);
         }
     }
 
@@ -70,7 +73,7 @@ class BehatEditorRoutes {
         if($params[4] == null) {
             return $this->reportsController->index($site_object, $params);
         } else {
-            return $this->reportsController->getReport($site_object, $params);
+            return $this->reportsController->retrieve($site_object, $params);
         }
     }
 
@@ -100,7 +103,7 @@ class BehatEditorRoutes {
         if($params[2] == null) {
             return $this->batchesController->index($site_object, $params);
         } else {
-            return $this->batchesController->getBatch($site_object, $params);
+            return $this->batchesController->retrieve($site_object, $params);
         }
     }
 
@@ -114,6 +117,10 @@ class BehatEditorRoutes {
         return $this->tokensController->index($site_object, $params);
     }
 
+    public function postSitesTests(array $params = null, array $request = null) {
+         $site_object = $this->getSites(array($params[0]));
+         return $this->testsController->post($site_object, $params, $request);
+    }
 
     public function setSiteId($id)
     {
