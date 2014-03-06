@@ -162,7 +162,10 @@ function behat_editor_services_rest() {
             if($args[1] != NULL) {
                   $method           .=  ucwords($args[1]);
                 if($args[2] != NULL) {
-                    if($args[3] != NULL) {
+                    if(!is_numeric($args[2])) {
+                        $method           .=  ucwords($args[2]);
+                    }
+                    if($args[3] != NULL && !is_numeric($args[3])) {
                           $method   .=  ucwords($args[3]);
                     }
                 }

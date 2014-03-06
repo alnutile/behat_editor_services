@@ -10,12 +10,18 @@ class BehatEditorRoutes {
     protected $sitesController;
     protected $testsController;
     protected $reportsController;
+    protected $batchesController;
+    protected $tagsController;
+    protected $tokensController;
 
-    public function __construct($sitesController = null, $testsController = null, $reportsController = null)
+    public function __construct($sitesController = null, $testsController = null, $reportsController = null, $batchesController = null, $tagsController = null, $tokensController = null)
     {
-        $this->sitesController          = ($sitesController == null) ? new BehatEditorSitesController() : $sitesController;
-        $this->testsController          = ($testsController == null) ? new BehatEditorTestsController() : $testsController;
-        $this->reportsController        = ($reportsController == null) ? new BehatEditorReportsController : $reportsController;
+        $this->sitesController          = ($sitesController   == null) ? new BehatEditorSitesController()   : $sitesController;
+        $this->testsController          = ($testsController   == null) ? new BehatEditorTestsController()   : $testsController;
+        $this->reportsController        = ($reportsController == null) ? new BehatEditorReportsController() : $reportsController;
+        $this->batchesController        = ($batchesController == null) ? new BehatEditorReportsController() : $batchesController;
+        $this->tagsController           = ($tagsController    == null) ? new BehatEditorTagsController()    : $tagsController;
+        $this->tokensController         = ($tokensController == null)  ? new BehatEditorTokensController()  : $tokensController;
     }
 
     public function getSites(array $params = null)
@@ -68,9 +74,45 @@ class BehatEditorRoutes {
         }
     }
 
-    public function getSitesBatches(array $params = null) {}
-    public function getSitesTags(array $params = null) {}
-    public function getSitesTokens(array $params = null) {}
+    public function getSitesTestsReports(array $params = null)
+    {
+        return $this->getSitesReports($params);
+    }
+
+    public function getSitesTestsTokens(array $params = null)
+    {
+        return $this->getSitesTests($params);
+    }
+
+    public function getSitesReportsTags(array $params = null)
+    {
+        return $this->getSitesReports($params);
+    }
+
+    public function getSitesReportsUrls(array $params = null)
+    {
+        return $this->getSitesReports($params);
+    }
+
+    public function getSitesBatches(array $params = null) {
+        $site_object = $this->getSites(array($params[0]));
+
+        if($params[2] == null) {
+            return $this->batchesController->index($site_object, $params);
+        } else {
+            return $this->batchesController->getBatch($site_object, $params);
+        }
+    }
+
+    public function getSitesTags(array $params = null) {
+        $site_object = $this->getSites(array($params[0]));
+        return $this->tagsController->index($site_object, $params);
+    }
+
+    public function getSitesTokens(array $params = null) {
+        $site_object = $this->getSites(array($params[0]));
+        return $this->tokensController->index($site_object, $params);
+    }
 
 
     public function setSiteId($id)
