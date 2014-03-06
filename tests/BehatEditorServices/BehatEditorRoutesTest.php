@@ -1,5 +1,12 @@
 <?php namespace BehatEditorServices;
 
+/**
+ * This is just to verify the Route has the correct methods in place
+ * This will not test much else.
+ *
+ * Class BehatEditorServicesTest
+ * @package BehatEditorServices
+ */
 class BehatEditorServicesTest extends BaseTests {
 
     public $behatRoutes;
@@ -147,10 +154,58 @@ class BehatEditorServicesTest extends BaseTests {
     public function testpostSitesTests()
     {
         $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
-        $this->testsController->shouldReceive('post')->once()->andReturn('Post Test 2 or site 1 Mocked');
+        $this->testsController->shouldReceive('create')->once()->andReturn('Post Test 2 or site 1 Mocked');
 
         $output = $this->behatRoutes->postSitesTests(array(1, 'tests', 2));
         $this->assertEquals('Post Test 2 or site 1 Mocked', $output);
+    }
+
+    public function testpostSitesTestReports()
+    {
+        $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
+        $this->reportsController->shouldReceive('create')->once()->andReturn('Post Reports 2 or site 1 Mocked');
+
+        $output = $this->behatRoutes->postSitesTestsReports(array(1, 'reports', 2));
+        $this->assertEquals('Post Reports 2 or site 1 Mocked', $output);
+    }
+
+    public function testpostSitesBatches()
+    {
+        $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
+        $this->batchesController->shouldReceive('create')->once()->andReturn('Post Batches 2 or site 1 Mocked');
+
+        $output = $this->behatRoutes->postSitesBatches(array(1, 'batches', 2));
+        $this->assertEquals('Post Batches 2 or site 1 Mocked', $output);
+    }
+
+    public function testpostSitesTestsTokens()
+    {
+        $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
+        $this->tokensController->shouldReceive('create')->once()->andReturn('Post Tokens 2 or site 1 Mocked');
+
+        $output = $this->behatRoutes->postSitesTestsTokens(array(1, 'reports', 2));
+        $this->assertEquals('Post Tokens 2 or site 1 Mocked', $output);
+    }
+
+    public function testputSites()
+    {
+        $this->sitesController->shouldReceive('update')->once()->andReturn('Updated');
+        $output = $this->behatRoutes->putSites(array(1, null, null, null, null), array('default token'));
+        $this->assertEquals('Updated', $output);
+    }
+
+    public function testputSitesTests()
+    {
+        $this->testsController->shouldReceive('update')->once()->andReturn('Updated');
+        $output = $this->behatRoutes->putSitesTests(array(1, null, null, null, null), array('default token'));
+        $this->assertEquals('Updated', $output);
+    }
+
+    public function testputSitesTestsReports()
+    {
+        $this->reportsController->shouldReceive('update')->once()->andReturn('Updated');
+        $output = $this->behatRoutes->putSitesTestsReports(array(1, null, null, null, null), array('default token'));
+        $this->assertEquals('Updated', $output);
     }
 
 }
