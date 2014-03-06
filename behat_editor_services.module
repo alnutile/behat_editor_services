@@ -1,0 +1,190 @@
+<?php
+
+include_once 'behat_editor_services.features.inc';
+
+//Menu
+//1. settings page for some defaults
+
+
+/**
+ * Implements hook_services_resources()
+ */
+function behat_editor_services_services_resources() {
+    return array(
+        "sites" => array(
+            'operations' => array(
+                'retrieve' => array(
+                    'help' => 'Retrieve a token record',
+                    'callback' => 'behat_editor_services_rest',
+                    'access callback' => 'behat_editor_services_rest_access',
+                    'args' => array(
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '0'),
+                            'optional' => FALSE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '1'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '2'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '3'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '4'),
+                            'optional' => TRUE,
+                        ),
+                    ),
+                ),
+                'create' => array(
+                    'help' => 'Create a token record',
+                    'callback' => 'behat_editor_services_rest',
+                    'access callback' => 'behat_editor_services_rest_access',
+                    'args' => array(
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '0'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '1'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '2'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '3'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'method',
+                            'type' => 'string',
+                            'description' => 'method of controller',
+                            'source' => array('path' => '4'),
+                            'optional' => TRUE,
+                        ),
+                        array(
+                            'name' => 'data',
+                            'type' => 'struct',
+                            'description' => 'The tokens structure',
+                            'source' => 'data',
+                            'optional' => FALSE,
+                        ),
+                    ),
+                ),
+                'update' => array(
+                    'help' => 'Update a token record',
+                    'callback' => 'behat_editor_services_rest',
+                    'access callback' => 'behat_editor_services_rest_access',
+                    'args' => array(
+                        array(
+                            'name' => 'parameters',
+                            'type' => 'array',
+                            'description' => 'The tokens structure',
+                            'source' => 'data',
+                            'optional' => FALSE,
+                        ),
+                    ),
+                ),
+                'delete' => array(
+                    'help' => 'Delete a token record',
+                    'callback' => 'behat_editor_services_rest',
+                    'args' => array(
+                        array(
+                            'name' => 'data',
+                            'type' => 'struct',
+                            'description' => 'The tokens structure',
+                            'source' => 'data',
+                            'optional' => FALSE,
+                        ),
+                    ),
+                ),
+                'index' => array(
+                    'help' => 'Retrieves users sites',
+                    'callback' => 'behat_editor_services_rest',
+                    'access callback' => 'behat_editor_services_rest_access',
+                ),
+            ),
+        ),
+    );
+}
+
+function behat_editor_services_rest_access() {
+    return TRUE;
+}
+
+function behat_editor_services_rest() {
+    composer_manager_register_autoloader();
+
+    //arg 0     = ID of site
+    //arg 1     = could be tests reports batches
+    //arg 2     = could be id of child 1
+    //arg 3     = could be tokens tags
+    //arg 4     = could be the id of child 2
+    $request_type = $_SERVER['REQUEST_METHOD'];
+    $args = func_get_args();
+    $method                          =   strtolower($request_type);
+    $method                         .=   'Sites';
+    switch($request_type) {
+        case 'GET':
+            if($args[1] != NULL) {
+                  $method           .=  ucwords($args[1]);
+                if($args[2] != NULL) {
+                    if($args[3] != NULL) {
+                          $method   .=  ucwords($args[3]);
+                    }
+                }
+            }
+            break;
+        case 'POST':
+            var_dump("Time to POST");
+            break;
+        default:
+            var_dump("No clue");
+    }
+    //2. figure out the resource
+    var_dump("Request Type " . $request_type);
+    var_dump($args);
+    var_dump("Request");
+    var_dump($_REQUEST);
+    var_dump("Final Method");
+    var_dump($method);
+
+    $reflectionMethod = new ReflectionMethod('\BehatEditorServices\BehatEditorRoutes', $method);
+    $reflectionMethod->invoke(new \BehatEditorServices\BehatEditorRoutes( new \BehatEditorServices\BehatEditorSitesController), $args);
+
+    drupal_json_output(array(1, 2, 3));
+    exit();
+}
