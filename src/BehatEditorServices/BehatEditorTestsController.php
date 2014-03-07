@@ -14,8 +14,8 @@ class BehatEditorTestsController extends BaseController {
         return [1,2,3, 'update tests'];
     }
 
-    public function delete(){}
-    
+    public function delete($params, $request){}
+
     public function index($params = null){
         return ["site {$params[0]}", 'index tests'];
     }

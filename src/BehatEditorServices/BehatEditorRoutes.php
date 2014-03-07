@@ -39,23 +39,19 @@ class BehatEditorRoutes {
 
     public function getSitesTests(array $params = null)
     {
-        $site_object = $this->getSites(array($params[0]));
-
         if($params[2] == null) {
-            return $this->testsController->index($params, $site_object);
+            return $this->testsController->index($params);
         } else {
-            return $this->testsController->retrieve($params, $site_object);
+            return $this->testsController->retrieve($params);
         }
     }
 
     public function getSitesReports(array $params = null)
     {
-        $site_object = $this->getSites(array($params[0]));
-
         if($params[4] == null) {
-            return $this->reportsController->index($params, $site_object);
+            return $this->reportsController->index($params);
         } else {
-            return $this->reportsController->retrieve($params, $site_object);
+            return $this->reportsController->retrieve($params);
         }
     }
 
@@ -80,44 +76,42 @@ class BehatEditorRoutes {
     }
 
     public function getSitesBatches(array $params = null) {
-        $site_object = $this->getSites(array($params[0]));
-
         if($params[2] == null) {
-            return $this->batchesController->index($params, $site_object);
+            return $this->batchesController->index($params);
         } else {
-            return $this->batchesController->retrieve($params, $site_object);
+            return $this->batchesController->retrieve($params);
         }
     }
 
     public function getSitesTags(array $params = null) {
-        $site_object = $this->getSites(array($params[0]));
-        return $this->tagsController->index($params, $site_object);
+        
+        return $this->tagsController->index($params);
     }
 
     public function getSitesTokens(array $params = null) {
-        $site_object = $this->getSites(array($params[0]));
-        return $this->tokensController->index($params, $site_object);
+        
+        return $this->tokensController->index($params);
     }
 
     /** POST REQUESTS */
     public function postSitesTests(array $params = null, array $request = null) {
-         $site_object = $this->getSites(array($params[0]));
-         return $this->testsController->create($params, $request, $site_object);
+         
+         return $this->testsController->create($params, $request);
     }
 
     public function postSitesTestsReports(array $params = null, array $request = null) {
-        $site_object = $this->getSites(array($params[0]));
-        return $this->reportsController->create($params, $request, $site_object);
+        
+        return $this->reportsController->create($params, $request);
     }
 
     public function postSitesBatches(array $params = null, array $request = null) {
-        $site_object = $this->getSites(array($params[0]));
-        return $this->batchesController->create($params, $request, $site_object);
+        
+        return $this->batchesController->create($params, $request);
     }
 
     public function postSitesTestsTokens(array $params = null, array $request = null) {
-        $site_object = $this->getSites(array($params[0]));
-        return $this->tokensController->create($params, $request, $site_object);
+        
+        return $this->tokensController->create($params, $request);
     }
 
     /** PUT REQUESTS */
@@ -136,6 +130,15 @@ class BehatEditorRoutes {
         return $this->reportsController->update($params, $request);
     }
 
+    public function putSitesBatches(array $params = null, array $request = null)
+    {
+        return $this->batchesController->update($params, $request);
+    }
+
+    public function putSitesTestsTokens(array $params = null, array $request = null)
+    {
+        return $this->tokensController->update($params, $request);
+    }
     /** DELETE REQUESTS */
 
 
