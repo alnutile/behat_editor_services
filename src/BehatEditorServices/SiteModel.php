@@ -1,11 +1,20 @@
 <?php namespace BehatEditorServices;
 
+
 use BehatEditorServices\BehatServicesException;
+use BehatEditorServices\SitesRepository;
 
 class SiteModel extends BaseModel
 {
 
     public $site_id;
+    public $repo;
+
+    public function __construct(SitesRepository $repo = null)
+    {
+        //We need to setup the helper with the needed paths
+        $this->repo       = ($repo == null) ? new SitesRepository() : $repo;
+    }
 
     public function create($site_id, $site_object)
     {
@@ -38,10 +47,12 @@ class SiteModel extends BaseModel
             ->setTemplateFolder($this->helper->getVendorRoot() . '/alnutile/behat_editor_core/lib/BehatApp/template_files/')
             ->setBasePath($this_sites_path)
             ->copyTemplateFilesOver($this_sites_path);
-        //URLs?
-        //Tokens
-        //root folder
         return $this->helper->getSitesFolderInBasePath();
     }
 
+    public function getSitesForUserId($user_id = null)
+    {
+        $output = $this->repo->getSitesForUserId($user_id);
+        return $output;
+    }
 }

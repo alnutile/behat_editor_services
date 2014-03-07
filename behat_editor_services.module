@@ -1,6 +1,7 @@
 <?php
 
 use BehatEditorServices\BehatEditorSitesController;
+use BehatEditorServices\SiteModel;
 
 include_once 'behat_editor_services.features.inc';
 
@@ -39,10 +40,29 @@ function behat_editor_services_menu()
         'description'       => 'Set some defaults for this module'
 
     );
+
+    $items['admin/behat_editor_services/testarea'] = array(
+        'title'             => t("Behat Editor Services Settings"),
+        'page callback'     => 'behat_editor_services_test_area',
+        'access arguments'  => array(
+            'admin behat_editor_services'
+        ),
+        'description'       => 'Set some defaults for this module',
+        'type'              => MENU_CALLBACK
+
+    );
     return $items;
 }
 
-
+function behat_editor_services_test_area()
+{
+    $output = 'test';
+    composer_manager_register_autoloader();
+    $model = new SiteModel();
+    $sites = $model->getSitesForUserId(1);
+    dpm($sites);
+    return $output;
+}
 
 /**
  * Implements hook_node_insert().
@@ -58,7 +78,6 @@ function behat_editor_services_node_insert($node) {
         drupal_set_message(t("New folder made for related tests %path", array('%path' => $create_output)), $type = 'status');
     }
 }
-
 
 /**
  * Implements hook_services_resources()

@@ -1,5 +1,7 @@
 <?php namespace BehatEditorServices;
 
+use Mockery;
+
 class BehatEditorSitesControllerTest extends BaseTests {
 
     public function setUp()
@@ -12,17 +14,24 @@ class BehatEditorSitesControllerTest extends BaseTests {
      */
     public function testIndex()
     {
-
+        $siteModel = Mockery::mock('BehatEditorServices\SiteModel');
+        $siteModel->shouldReceive('getSitesForUserId')->once()->andReturn(array(1,2,3));
+        $sitesModel = new BehatEditorSitesController($siteModel);
+        $output = $sitesModel->index(array('user_id' => 10));
+        $this->assertEquals(array(1,2,3), $output);
     }
 
     /**
-     * Setup sites folder check
+     * Setup sites folder check that the method is there.
+     * the model test will cover more
      */
     public function testFolderSetup()
     {
-        //1. pass the site id to the method
-        //2. then it should make the folder for us
-        //   this will be triggered on site (node) create
+        $siteModel = Mockery::mock('BehatEditorServices\SiteModel');
+        $siteModel->shouldReceive('create')->once()->andReturn('/some/path');
+        $sitesModel = new BehatEditorSitesController($siteModel);
+        $output = $sitesModel->create('5555', array());
+        $this->assertEquals('/some/path', $output);
     }
 
 }

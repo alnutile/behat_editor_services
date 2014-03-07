@@ -1,6 +1,6 @@
 <?php namespace BehatEditorServices;
 
-use BehatEditorServices\SitsModel;
+use BehatEditorServices\SitesModel;
 
 class BehatEditorSitesController extends BaseController {
     protected $model;
@@ -18,6 +18,12 @@ class BehatEditorSitesController extends BaseController {
     public function update($params, $request)
     {
         return array(1,2,3,'update sites');
+    }
+
+    public function index(array $params = null)
+    {
+        $sites = $this->model->getSitesForUserId($params);
+        return $sites;
     }
 
     /**
