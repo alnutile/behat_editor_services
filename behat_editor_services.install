@@ -1,0 +1,31 @@
+<?php
+
+
+
+function behat_editor_services_install()
+{
+    _behat_editor_services_setup_private();
+    _behat_editor_services_setup_defaults();
+}
+
+function _behat_editor_services_setup_defaults()
+{
+    variable_set('behat_editor_services_site_node_type', 'site');
+}
+
+function behat_editor_services_enable()
+{
+    _behat_editor_services_setup_private();
+}
+
+function _behat_editor_services_setup_private()
+{
+    $private = variable_get('file_private_path');
+    if(variable_get('file_private_path') == null || empty($private) ) {
+        $public     = variable_get('file_public_path');
+        $public     = drupal_realpath($public);
+        drupal_mkdir($public . '/private');
+        variable_set('file_private_path', $public . '/private');
+    }
+}
+

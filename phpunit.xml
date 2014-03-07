@@ -12,7 +12,9 @@
         >
     <testsuites>
         <testsuite name="BehatApp_Test_Suite">
-            <directory>BehatEditorServices/tests</directory>
+            <directory>tests/BehatEditorServices/Routes</directory>
+            <directory>tests/BehatEditorServices/Controllers</directory>
+            <directory>tests/BehatEditorServices/Models</directory>
         </testsuite>
         <testsuite name="Routes">
             <file>tests/BehatEditorServices/BaseTest.php</file>

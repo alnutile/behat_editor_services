@@ -1,9 +1,63 @@
 <?php
 
+use BehatEditorServices\BehatEditorSitesController;
+
 include_once 'behat_editor_services.features.inc';
 
-//Menu
-//1. settings page for some defaults
+/**
+ * Implements hook_help().
+ */
+function behat_editor_services_help($path, $arg) {
+    switch ($path) {
+        case 'admin/config/development/behat_editor_services' :
+            return '<p>' . t('Configure settings for <a href="@behat_editor_services">Behat Editor Services</a>') . '</p>';
+    }
+}
+
+function behat_editor_services_permission()
+{
+        return array(
+            'admin behat_editor_services' => array(
+                'title' => t('Admin Default Settings'),
+                'description' => t("Set settings like node type to watch etc")
+            )
+        );
+}
+
+function behat_editor_services_menu()
+{
+    $items['admin/config/development/behat_editor_services'] = array(
+        'title'             => t("Behat Editor Services Settings"),
+        'page callback'     => 'drupal_get_form',
+        'page arguments'    => array(
+            'behat_editor_services_admin_form'
+        ),
+        'file'              => 'behat_editor_services.admin.inc',
+        'access arguments'  => array(
+            'admin behat_editor_services'
+        ),
+        'description'       => 'Set some defaults for this module'
+
+    );
+    return $items;
+}
+
+
+
+/**
+ * Implements hook_node_insert().
+ *
+ */
+function behat_editor_services_node_insert($node) {
+    if (variable_get('behat_editor_services_site_node_type') == $node->type) {
+        composer_manager_register_autoloader();
+        $uuid = $node->uuid;
+        $siteController = new BehatEditorSitesController();
+        $create_output = $siteController->create($uuid, $node);
+        watchdog('behat_editor_services', "Made related folder for %uuid in path %path", array('%uuid' => $uuid, '%path' => $create_output));
+        drupal_set_message(t("New folder made for related tests %path", array('%path' => $create_output)), $type = 'status');
+    }
+}
 
 
 /**

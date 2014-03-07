@@ -1,6 +1,8 @@
 <?php namespace BehatEditorServices;
 
 use Mockery;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class BaseTests extends \PHPUnit_Framework_TestCase {
 
@@ -10,6 +12,8 @@ class BaseTests extends \PHPUnit_Framework_TestCase {
     public $batchesController;
     public $tagsController;
     public $tokensController;
+    public $fileSystem;
+    public $finder;
 
 
     function setUp()
@@ -21,6 +25,8 @@ class BaseTests extends \PHPUnit_Framework_TestCase {
       $this->batchesController            = Mockery::mock('BehatEditorBatchesController');
       $this->tagsController               = Mockery::mock('BehatEditorTagsController');
       $this->tokensController             = Mockery::mock('BehatEditorTokensController');
+      $this->finder                       = new Finder();
+      $this->fileSystem                   = new Filesystem();
     }
 
     function testGo()
