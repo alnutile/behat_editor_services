@@ -1,10 +1,9 @@
 <?php namespace BehatEditorServices;
 
 class BaseController implements BaseControllerInterface  {
-
-    public function retrieve(){}
-    public function create(){}
-    public function update(){}
-    public function delete(){}
-    public function index(){}
+    public function retrieve($request){}
+    public function create($params, $request){}
+    public function update($params, $request){}
+    public function delete($params, $request){}
+    public function index($params){}
 }

@@ -11,8 +11,15 @@
          syntaxCheck="false"
         >
     <testsuites>
-        <testsuite name="BehatApp Test Suite">
-            <directory>tests</directory>
+        <testsuite name="BehatApp_Test_Suite">
+            <directory>BehatEditorServices/tests</directory>
+        </testsuite>
+        <testsuite name="Routes">
+            <file>tests/BehatEditorServices/BaseTest.php</file>
+            <directory>tests/BehatEditorServices/Routes</directory>
+        </testsuite>
+        <testsuite name="Services">
+            <directory>tests/BehatEditorServices/services</directory>
         </testsuite>
     </testsuites>
 </phpunit>
