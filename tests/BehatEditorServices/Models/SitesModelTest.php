@@ -1,7 +1,7 @@
 <?php namespace BehatEditorServices;
 
 use Mockery;
-use BehatEditorServices\SitesModel;
+use BehatEditorServices\SiteModel;
 
 class SitesModelTest extends \PHPUnit_Framework_TestCase {
 
@@ -18,6 +18,13 @@ class SitesModelTest extends \PHPUnit_Framework_TestCase {
     {
         $this->repo->shouldReceive('getSitesForUserId')->once()->andReturn(array(1,2,3));
         $output = $this->siteModel->getSitesForUserId(123);
+        $this->assertEquals(array(1,2,3), $output);
+    }
+
+    public function testgetSitesAndTestsForSiteUUID()
+    {
+        $this->repo->shouldReceive('getSiteAndTestsForSiteUUID')->once()->andReturn(array(1,2,3));
+        $output = $this->siteModel->getSiteAndTestsForSiteUUID(123);
         $this->assertEquals(array(1,2,3), $output);
     }
 }

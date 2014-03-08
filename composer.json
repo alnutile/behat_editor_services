@@ -1,6 +1,7 @@
 {
     "require": {
-        "alnutile/behat_editor_core": "dev-master"
+        "alnutile/behat_editor_core": "dev-master",
+        "alnutile/behat-wrapper": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

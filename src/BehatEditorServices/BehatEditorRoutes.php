@@ -42,6 +42,7 @@ class BehatEditorRoutes {
         if($params[2] == null) {
             return $this->testsController->index($params);
         } else {
+
             return $this->testsController->retrieve($params);
         }
     }

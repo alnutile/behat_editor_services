@@ -1,6 +1,5 @@
 <?php namespace BehatEditorServices;
 
-
 /**
  * By using this between my other classes I can
  * then more easily mock the results as needed
@@ -10,22 +9,32 @@
  */
 class ServicesRepository {
 
-    public function getSitesForUserId($uid = null)
+
+    public $helpers;
+
+    public function __construct()
     {
-        global $user;
-        ($uid == null) ? $uid = $user->uid : null;
-        $query = new \EntityFieldQuery();
-        $query->entityCondition('entity_type', 'node')
-            ->entityCondition('bundle', variable_get('behat_editor_services_site_node_type', 'site'))
-            ->propertyCondition('status', 1)
-            ->propertyCondition('uid', $uid);
-        $result = $query->execute();
+
+    }
+
+    public function preProcessOutput($params)
+    {
+        list($data) = $params;
+        return $data;
+    }
+
+    public function buildNodeArray($result, $model)
+    {
+        $sites = array();
         if (isset($result['node'])) {
             $sites = array_keys($result['node']);
             $sites = entity_load('node', $sites);
+            $sites->full_path = $model->getFullPath();
         }
+
         return $sites;
     }
+
 
 
 }

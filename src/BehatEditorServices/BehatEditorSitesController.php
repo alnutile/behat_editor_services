@@ -1,6 +1,6 @@
 <?php namespace BehatEditorServices;
 
-use BehatEditorServices\SitesModel;
+use BehatEditorServices\SiteModel;
 
 class BehatEditorSitesController extends BaseController {
     protected $model;
@@ -10,9 +10,10 @@ class BehatEditorSitesController extends BaseController {
         $this->model        = ($model == null) ? new SiteModel() : $model;
 
     }
-    public function retrieve($request)
+    public function retrieve($params)
     {
-        return array(1,2,3, 'sites');
+        $site = $this->model->getSitesUUIDFromNid($params[0]);
+        return $site;
     }
 
     public function update($params, $request)
@@ -22,7 +23,11 @@ class BehatEditorSitesController extends BaseController {
 
     public function index(array $params = null)
     {
-        $sites = $this->model->getSitesForUserId($params);
+        global $user;
+        if(!isset($params[0])){
+            $user_id = $user->uid;
+        }
+        $sites = $this->model->getSitesForUserId($user_id);
         return $sites;
     }
 

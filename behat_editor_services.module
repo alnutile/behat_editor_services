@@ -59,7 +59,9 @@ function behat_editor_services_test_area()
     $output = 'test';
     composer_manager_register_autoloader();
     $model = new SiteModel();
-    $sites = $model->getSitesForUserId(1);
+    //$sites = $model->getSitesForUserId(1);
+    $sites = $model->getSiteAndTestsForSiteUUID('94790c7d-5682-4710-afc6-c36c502cc3c3');
+
     dpm($sites);
     return $output;
 }
@@ -267,7 +269,6 @@ function behat_editor_services_rest() {
     $method                         .=   'Sites';
     $request                         =   $_REQUEST;
     _behat_editor_services_process_args($method, $args);
-    var_dump($method);
     $route = new BehatEditorServices\BehatEditorRoutes();
 
     $output = null;
@@ -281,7 +282,7 @@ function _behat_editor_services_process_args(&$method, $args) {
     if($args[1] != NULL) {
         $method           .=  ucwords($args[1]);
         if($args[2] != NULL) {
-            if(!is_numeric($args[2])) {
+            if(!is_numeric($args[2]) && strpos($args[2], 'feature') === FALSE) {
                 $method           .=  ucwords($args[2]);
             }
             if($args[3] != NULL && !is_numeric($args[3])) {

@@ -1,7 +1,9 @@
 <?php namespace BehatEditorServices;
 
 use BehatApp\BehatHelper;
+use BehatApp\BehatFeatureModel;
 use BehatEditorServices\BehatServicesException;
+
 
 /**
  * This will centralize some key functions I need for the
@@ -15,12 +17,16 @@ use BehatEditorServices\BehatServicesException;
 class BehatServicesHelper {
 
     public $behelper;
+    public $behatFeatureModel;
+    public $behatTestsController;
     public $base_path_of_sites;
     public $base_path_of_site;
 
-    public function __construct(BehatHelper $behelper = null)
+    public function __construct(BehatHelper $behelper = null, BehatFeatureModel $behatFeatureModel = null)
     {
-        $this->behelper = ($behelper == null) ? new BehatHelper() : $behelper;
+        $this->behelper             = ($behelper == null) ? new BehatHelper() : $behelper;
+        $this->behatFeatureModel    = ($behatFeatureModel == null) ? new BehatFeatureModel() : $behatFeatureModel;
+
     }
 
     /**

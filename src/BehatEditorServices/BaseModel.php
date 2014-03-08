@@ -3,7 +3,7 @@
 use BehatEditorServices\BehatServicesHelper;
 
 class BaseModel {
-    protected $helper;
+    public $helper;
 
     public function __construct(BehatServicesHelper $helper = null)
     {

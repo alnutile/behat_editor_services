@@ -3,17 +3,21 @@
 
 use BehatEditorServices\BehatServicesException;
 use BehatEditorServices\SitesRepository;
+use BehatEditorServices\FeatureModel;
 
 class SiteModel extends BaseModel
 {
 
     public $site_id;
+    public $uuid;
     public $repo;
+    public $this_sites_path;
 
     public function __construct(SitesRepository $repo = null)
     {
+        parent::__construct();
         //We need to setup the helper with the needed paths
-        $this->repo       = ($repo == null) ? new SitesRepository() : $repo;
+        $this->repo         = ($repo == null) ? new SitesRepository() : $repo;
     }
 
     public function create($site_id, $site_object)
@@ -32,6 +36,17 @@ class SiteModel extends BaseModel
     public function getSiteId()
     {
         return $this->site_id;
+    }
+
+    public function getSitesUUIDFromNid($nid)
+    {
+        $this->repo->getSitesUUIDFromNid($nid);
+        $this->helper->setSiteFolderInBasePathUsingSiteId($this->repo->site->uuid);
+        $this->this_sites_path = $this->helper->getSitesFolderInBasePath();
+        $this->repo->setFullPath($this->this_sites_path);
+        $this->repo->hasManyTests();
+        $this->repo->setSiteNodesFullPath($this->this_sites_path);
+        return $this->repo->preProcessOutput(array($this->repo->site));
     }
 
     public function setupFolder()
@@ -53,6 +68,14 @@ class SiteModel extends BaseModel
     public function getSitesForUserId($user_id = null)
     {
         $output = $this->repo->getSitesForUserId($user_id);
+        return $output;
+    }
+
+    public function getSiteAndTestsForSiteUUID($uuid) {
+        $this->helper->setSiteFolderInBasePathUsingSiteId($uuid);
+        $this->this_sites_path = $this->helper->getSitesFolderInBasePath();
+        $output = $this->repo->getSiteAndTestsForSiteUUID(array($uuid, $this->this_sites_path, $this));
+
         return $output;
     }
 }
