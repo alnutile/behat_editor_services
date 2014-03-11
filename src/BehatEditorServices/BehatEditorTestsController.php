@@ -33,7 +33,10 @@ class BehatEditorTestsController extends BaseController {
     }
 
     public function update($params, $request){
-        return [1,2,3, 'update tests'];
+        $site = $params[5]['site'];
+        $test = $params[5]['test'];
+        $results = $this->model->update($test, $site);
+        return $results;
     }
 
     public function delete($params, $request){}
