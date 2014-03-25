@@ -73,6 +73,7 @@ class SiteModel extends BaseModel
     }
 
     public function getSiteAndTestsForSiteUUID($uuid) {
+
         $this->helper->setSiteFolderInBasePathUsingSiteId($uuid);
         $this->this_sites_path = $this->helper->getSitesFolderInBasePath();
         $output = $this->repo->getSiteAndTestsForSiteUUID(array($uuid, $this->this_sites_path, $this));
