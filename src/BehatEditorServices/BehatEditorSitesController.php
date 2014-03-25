@@ -5,11 +5,19 @@ use BehatEditorServices\SiteModel;
 class BehatEditorSitesController extends BaseController {
     protected $model;
 
-    public function __construct(SiteModel $model = null) {
+    public function __construct(SiteModel $model = null, $user = null) {
         parent::__construct();
         $this->model        = ($model == null) ? new SiteModel() : $model;
+        $this->user         = ($user == null) ?  static::getUser() : $user;
 
     }
+
+    static private function getUser()
+    {
+        global $user;
+        return $user;
+    }
+
     public function retrieve($params)
     {
         $site = $this->model->getSitesUUIDFromNid($params[0]);
@@ -23,9 +31,8 @@ class BehatEditorSitesController extends BaseController {
 
     public function index(array $params = null)
     {
-        global $user;
         if(!isset($params[0])){
-            $user_id = $user->uid;
+            $user_id = $this->user->uid;
         }
         $sites = $this->model->getSitesForUserId($user_id);
         return $sites;

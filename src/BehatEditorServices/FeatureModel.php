@@ -19,7 +19,6 @@ class FeatureModel extends BaseModel
         parent::__construct();
         $this->behatFormatter = ($behatFormatter == null) ? new BehatFormatter() : $behatFormatter;
         $this->behatFeatureModule = ($behatFeatureModule == null) ? new BehatFeatureModel() : $behatFeatureModule;
-        //$this->siteModel =  ($siteModel == null) ? new SiteModel() : $siteModel;
     }
 
     public function getTestsInPath($full_path)
@@ -56,9 +55,15 @@ class FeatureModel extends BaseModel
 
     public function create($params, $site_object)
     {
-        //1. use params[0] to get the test info include the path
-        $this->destination = $site_object->full_path;
-        var_dump($this->destination);
-        //1 take the content in the request to make the file
+        $content        = $params['content'];
+        $destination    = $params['path'];
+        //Just need to add some info to the test file
+        // so I can return a new model
+        $results = $this->behatFeatureModule->create([$content, $destination]);
+        if ($results['error'] === 0) {
+            $params['name_dashed']  =  $this->helper->behelper->replaceDotsWithDashes($params['name']);
+            $params['content_html']  =  $this->behatFormatter->plainToHtml($params['content']);
+        }
+        return array('message' => $results['message'], 'data' => $params, 'errors' => $results['error']);
     }
 }

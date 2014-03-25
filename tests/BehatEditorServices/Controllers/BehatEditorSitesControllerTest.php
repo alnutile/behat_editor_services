@@ -2,6 +2,8 @@
 
 use Mockery;
 
+
+
 class BehatEditorSitesControllerTest extends BaseTests {
 
     public function setUp()
@@ -15,8 +17,9 @@ class BehatEditorSitesControllerTest extends BaseTests {
     public function testIndex()
     {
         $siteModel = Mockery::mock('BehatEditorServices\SiteModel');
+        $user = (object) ['uid' => 1];
         $siteModel->shouldReceive('getSitesForUserId')->once()->andReturn(array(1,2,3));
-        $sitesModel = new BehatEditorSitesController($siteModel);
+        $sitesModel = new BehatEditorSitesController($siteModel, $user);
         $output = $sitesModel->index(array('user_id' => 10));
         $this->assertEquals(array(1,2,3), $output);
     }
@@ -33,5 +36,4 @@ class BehatEditorSitesControllerTest extends BaseTests {
         $output = $sitesModel->create('5555', array());
         $this->assertEquals('/some/path', $output);
     }
-
 }

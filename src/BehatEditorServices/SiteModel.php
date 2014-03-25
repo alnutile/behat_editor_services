@@ -41,11 +41,12 @@ class SiteModel extends BaseModel
     public function getSitesUUIDFromNid($nid)
     {
         $this->repo->getSitesUUIDFromNid($nid);
-        $this->helper->setSiteFolderInBasePathUsingSiteId($this->repo->site->uuid);
-        $this->this_sites_path = $this->helper->getSitesFolderInBasePath();
+        $siteHelp = $this->helper->setSiteFolderInBasePathUsingSiteId($this->repo->site->uuid);
+        $this->this_sites_path = $siteHelp->base_path_of_site;
         $this->repo->setFullPath($this->this_sites_path);
         $this->repo->hasManyTests();
         $this->repo->setSiteNodesFullPath($this->this_sites_path);
+        $this->repo->setSitesPathForTests($this->this_sites_path . '/features');
         return $this->repo->preProcessOutput(array($this->repo->site));
     }
 

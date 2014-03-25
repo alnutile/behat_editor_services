@@ -33,21 +33,23 @@ class SitesRepository extends ServicesRepository {
     {
         global $user;
         ($uid == null) ? $uid = $user->uid : null;
-        $query = $this->baseQuery()
-            ->propertyCondition('uid', $uid);
-        $query->execute();
-        $result = $query->execute();
-        $sites = $this->buildNodeArray($result, $this);
-
+        $default = variable_get('behat_editor_services_site_node_type', 'site');
+        $result = db_query("SELECT * FROM {node} WHERE type LIKE :type AND uid = :uid", array(':type' => $default, ':uid' => $uid));
+        $nids = [];
+        foreach($result as $record) {
+            $nids['node'][$record->nid] = $record->nid;
+        }
+        $sites = $this->buildNodeArray($nids, $this);
         return $this->preProcessOutput(array($sites));
     }
 
     public function getSitesUUIDFromNid($nid)
     {
+        $model = $this;
         $query = $this->baseQuery()
             ->propertyCondition('nid', $nid);
         $result = $query->execute();
-        $this->site = $this->buildNodeArray($result, $this);
+        $this->site = $this->buildNodeArray($result, $model);
         $this->site = array_shift($this->site);
         return $this;
     }
@@ -55,6 +57,12 @@ class SitesRepository extends ServicesRepository {
     public function setSiteNodesFullPath($full_path)
     {
         $this->site->full_path = $full_path;
+        return $this;
+    }
+
+    public function setSitesPathForTests($full_path)
+    {
+        $this->site->test_files_root_path = $full_path;
         return $this;
     }
 
@@ -76,6 +84,7 @@ class SitesRepository extends ServicesRepository {
 
     public function baseQuery()
     {
+
         $this->eq->entityCondition('entity_type', 'node')
             ->entityCondition('bundle', variable_get('behat_editor_services_site_node_type', 'site'))
             ->propertyCondition('status', 1);

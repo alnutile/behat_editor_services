@@ -3,15 +3,26 @@
 use Mockery;
 use BehatEditorServices\SiteModel;
 
-class SitesModelTest extends \PHPUnit_Framework_TestCase {
+function drupal_realpath() {
+    $date = time();
+    return "/tmp/tests/$date";
+}
+
+class SitesModelTest extends BaseTests {
 
     public $repo;
     public $siteModel;
 
     public function setUp()
     {
+        parent::setup();
         $this->repo = Mockery::mock('BehatEditorServices\SitesRepository');
         $this->siteModel = new SiteModel($this->repo);
+    }
+
+    public function tearDown()
+    {
+        $this->fileSystem->remove("/tmp/tests");
     }
 
     public function testgetSitesForUserId()

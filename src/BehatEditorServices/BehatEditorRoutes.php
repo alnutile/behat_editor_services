@@ -47,6 +47,11 @@ class BehatEditorRoutes {
         }
     }
 
+    public function getSitesTestsRun(array $params = null)
+    {
+        return $this->testsController->run($params);
+    }
+
     public function getSitesReports(array $params = null)
     {
         if($params[4] == null) {

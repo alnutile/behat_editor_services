@@ -33,6 +33,13 @@ class BehatEndPointsTest extends BaseTests {
         $this->assertEquals('200', $http_code);
     }
 
+    public function testEndPointGetSitesTestRun()
+    {
+        $request_url = static::$baseUrl . '/123/tests/324/run';
+        $http_code   = $this->curl($request_url);
+        $this->assertEquals('200', $http_code);
+    }
+
     public function testEndPointGetSitesTestReportsAll()
     {
         $request_url = static::$baseUrl . '/123/tests/324/reports';

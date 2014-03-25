@@ -26,12 +26,11 @@ class ServicesRepository {
     public function buildNodeArray($result, $model)
     {
         $sites = array();
-        if (isset($result['node'])) {
+        if (isset($result['node']) && is_object($model)) {
             $sites = array_keys($result['node']);
             $sites = entity_load('node', $sites);
             $sites->full_path = $model->getFullPath();
         }
-
         return $sites;
     }
 
