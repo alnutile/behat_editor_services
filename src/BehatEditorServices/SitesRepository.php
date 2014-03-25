@@ -12,12 +12,21 @@ class SitesRepository extends ServicesRepository {
     public $uuid;
     public $featureModel;
     public $eq;
+    public $user;
+    protected $type;
 
-    public function __construct(BehatEditorTestsController $behatTestsController = null, \EntityFieldQuery $eq = null, FeatureModel $featureModel = null)
+    public function __construct(BehatEditorTestsController $behatTestsController = null, FeatureModel $featureModel = null, $user = null)
     {
         parent::__construct();
-        $this->eq = ($eq == null) ? new \EntityFieldQuery() : $eq;
+        $this->type = variable_get('behat_editor_services_site_node_type', 'site');
+        $this->user = ($user == null) ? self::getUser() : $user;
         $this->featureModel = ($featureModel == null) ? new FeatureModel() : $featureModel;
+    }
+
+    private static function getUser()
+    {
+        global $user;
+        return $user;
     }
 
     /**
@@ -31,10 +40,8 @@ class SitesRepository extends ServicesRepository {
      */
     public function getSitesForUserId($uid = null)
     {
-        global $user;
-        ($uid == null) ? $uid = $user->uid : null;
-        $default = variable_get('behat_editor_services_site_node_type', 'site');
-        $result = db_query("SELECT * FROM {node} WHERE type LIKE :type AND uid = :uid", array(':type' => $default, ':uid' => $uid));
+        ($uid == null) ? $uid = $this->user->uid : null;
+        $result = db_query("SELECT * FROM {node} WHERE type LIKE :type AND uid = :uid", array(':type' => $this->type, ':uid' => $uid));
         $nids = [];
         foreach($result as $record) {
             $nids['node'][$record->nid] = $record->nid;
@@ -46,11 +53,16 @@ class SitesRepository extends ServicesRepository {
     public function getSitesUUIDFromNid($nid)
     {
         $model = $this;
-        $query = $this->baseQuery()
-            ->propertyCondition('nid', $nid);
-        $result = $query->execute();
-        $this->site = $this->buildNodeArray($result, $model);
-        $this->site = array_shift($this->site);
+        $result = db_query("SELECT * FROM {node} WHERE type LIKE :type", array(':type' => $this->type));
+        $nids = [];
+        foreach($result as $record) {
+            $nids['node'][$record->nid] = $record->nid;
+        }
+
+        $this->site = $this->buildNodeArray($nids, $this);
+        if(is_array($this->site)) {
+            $this->site = array_shift($this->site);
+        }
         return $this;
     }
 
@@ -72,23 +84,22 @@ class SitesRepository extends ServicesRepository {
         $this->uuid = $uuid;
         $this->siteModel = $siteModel;
         $this->full_path = $full_path;
-        $query = $this->baseQuery()
-            ->propertyCondition('uuid', $this->uuid);
-        $result = $query->execute();
-        $this->site = $this->buildNodeArray($result, $this);
-        $this->site = array_shift($this->site);
+
+        $result = db_query("SELECT * FROM {node} WHERE type LIKE :type AND uuid = :uid", array(':type' => $this->type, ':uid' => $uuid));
+        $nids = [];
+
+        foreach($result as $record) {
+            $nids['node'][$record->nid] = $record->nid;
+        }
+
+        $this->site = $this->buildNodeArray($nids, $this);
+        if(is_array($this->site)) {
+            $this->site = array_shift($this->site);
+        }
+
         $this->hasManyTests();
         $this->site->full_path = $full_path;
         return $this->preProcessOutput(array($this->site));
-    }
-
-    public function baseQuery()
-    {
-
-        $this->eq->entityCondition('entity_type', 'node')
-            ->entityCondition('bundle', variable_get('behat_editor_services_site_node_type', 'site'))
-            ->propertyCondition('status', 1);
-        return $this->eq;
     }
 
     public function setFullPath($full_path)
