@@ -15,16 +15,6 @@ class BehatReportRepository extends ReportRepository {
 
     }
 
-    public function findAllBySiteId(array $sites_array)
-    {
-
-        foreach($sites_array as $value)
-        {
-            //for each site id we need to find the rows.
-            // could be a simple in query too on the db?
-        }
-    }
-
     public function index()
     {
         $reports_all = [];
@@ -48,6 +38,21 @@ class BehatReportRepository extends ReportRepository {
         }
         return [];
     }
+
+    public function retrieveBySiteId(array $sites_array)
+    {
+        $reports_all = null;
+        $reports_all_output = [];
+        $sites = $this->getUsersSites([], FALSE);
+        $reports_all = $this->reportModel->retrieveBySiteId($sites_array);
+        foreach($reports_all as $report) {
+            if(in_array($report->site_id, $sites['node'])) {
+                $reports_all_output[] = $report;
+            }
+        }
+        return $reports_all_output;
+    }
+
 
     private function getUsersSites($params, $load_nodes = TRUE)
     {

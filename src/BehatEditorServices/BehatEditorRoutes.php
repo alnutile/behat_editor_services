@@ -46,6 +46,11 @@ class BehatEditorRoutes {
         }
     }
 
+    public function getSitesReports(array $params = null)
+    {
+        return $this->reportsController->retrieveBySiteId($params);
+    }
+
     public function getSitesTests(array $params = null)
     {
         if($params[2] == null) {
@@ -59,15 +64,6 @@ class BehatEditorRoutes {
     public function getSitesTestsRun(array $params = null)
     {
         return $this->testsController->run($params);
-    }
-
-    public function getSitesReports(array $params = null)
-    {
-        if($params[4] == null) {
-            return $this->reportsController->index($params);
-        } else {
-            return $this->reportsController->retrieve($params);
-        }
     }
 
     public function getSitesTestsReports(array $params = null)
