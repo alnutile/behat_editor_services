@@ -1,16 +1,19 @@
 <?php namespace BehatEditorServices;
 
 use BehatApp\ReportRepository;
+use BehatApp\BehatHelper;
 
 class BehatReportRepository extends ReportRepository {
 
     public $reportModel;
+    public $behatHelper;
 
-    public function __construct(SitesRepository $siteModel = null, $user = null, ReportModel $reportModel = null)
+    public function __construct(SitesRepository $siteModel = null, $user = null, ReportModel $reportModel = null, BehatHelper $behatHelper = null)
     {
         parent::__construct(null);
         $this->siteModel            = ($siteModel == null) ? new SitesRepository() : $siteModel;
         $this->reportModel          = ($reportModel == null) ? new ReportModel() : $reportModel;
+        $this->behatHelper          = ($behatHelper == null) ? new BehatHelper() : $behatHelper;
         $this->user                 = ($user == null) ?  static::getUser() : $user;
 
     }
@@ -46,6 +49,22 @@ class BehatReportRepository extends ReportRepository {
         $sites = $this->getUsersSites([], FALSE);
         $reports_all = $this->reportModel->retrieveBySiteId($sites_array);
         foreach($reports_all as $report) {
+            if(in_array($report->site_id, $sites['node'])) {
+                $reports_all_output[] = $report;
+            }
+        }
+        return $reports_all_output;
+    }
+
+    public function retrieveBySiteIdAndTestName($site_id, $test_name)
+    {
+        $reports_all = null;
+        $reports_all_output = [];
+        $sites = $this->getUsersSites([], FALSE);
+        $test_name = $this->behatHelper->replaceDashWithDots($test_name);
+        $reports_all = $this->reportModel->retrieveBySiteIdAndTestName($site_id, $test_name);
+        foreach($reports_all as $report) {
+
             if(in_array($report->site_id, $sites['node'])) {
                 $reports_all_output[] = $report;
             }

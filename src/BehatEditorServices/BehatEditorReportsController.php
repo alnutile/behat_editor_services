@@ -41,4 +41,14 @@ class BehatEditorReportsController extends BaseController {
             return $this->reportRepo->retrieve($request[2]);
         }
     }
+
+    public function retrieveBySiteIdAndTestName($site_id, $test_name, $report_id = false)
+    {
+        if($report_id == NULL || $report_id == false) {
+            return $this->reportRepo->retrieveBySiteIdAndTestName($site_id, $test_name);
+        } else {
+            return $this->reportRepo->retrieve($report_id);
+        }
+    }
+
 }

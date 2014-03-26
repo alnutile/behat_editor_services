@@ -32,13 +32,8 @@ class ReportModel implements Persistence  {
 
     public function retrieveBySiteIdAndTestName($id, $name)
     {
-        $results = [];
-        foreach($this->data as $key) {
-            if($key['site_id'] == $id && $key['test_name'] == $name) {
-                $results[] = $key;
-            }
-        }
-        return $results;
+        $results = db_query("SELECT * FROM {behat_editor_results} WHERE site_id = :sid and test_name LIKE :test_name", array(":sid" => $id, ":test_name" => $name));
+        return $results->fetchAll();
     }
 
 

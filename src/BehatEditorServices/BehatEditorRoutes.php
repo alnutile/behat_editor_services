@@ -68,7 +68,10 @@ class BehatEditorRoutes {
 
     public function getSitesTestsReports(array $params = null)
     {
-        return $this->getSitesReports($params);
+        $site_id    = $params[0];
+        $test_name  = $params[2];
+        $report_id  = $params[4];
+        return $this->reportsController->retrieveBySiteIdAndTestName($site_id, $test_name, $report_id);
     }
 
     public function getSitesTestsTokens(array $params = null)
