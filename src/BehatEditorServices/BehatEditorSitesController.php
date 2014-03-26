@@ -9,13 +9,6 @@ class BehatEditorSitesController extends BaseController {
         parent::__construct();
         $this->model        = ($model == null) ? new SiteModel() : $model;
         $this->user         = ($user == null) ?  static::getUser() : $user;
-
-    }
-
-    static private function getUser()
-    {
-        global $user;
-        return $user;
     }
 
     public function retrieve($params)

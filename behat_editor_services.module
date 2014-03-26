@@ -96,35 +96,35 @@ function behat_editor_services_services_resources() {
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '0'),
                             'optional' => FALSE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '1'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '2'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '3'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '4'),
                             'optional' => TRUE,
                         ),
@@ -138,35 +138,35 @@ function behat_editor_services_services_resources() {
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '0'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '1'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '2'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '3'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '4'),
                             'optional' => TRUE,
                         ),
@@ -187,35 +187,35 @@ function behat_editor_services_services_resources() {
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '0'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '1'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '2'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '3'),
                             'optional' => TRUE,
                         ),
                         array(
                             'name' => 'method',
                             'type' => 'string',
-                            'description' => 'id or name of chile',
+                            'description' => 'id or name of child',
                             'source' => array('path' => '4'),
                             'optional' => TRUE,
                         ),
@@ -248,6 +248,29 @@ function behat_editor_services_services_resources() {
                 ),
             ),
         ),
+        "reports" => array(
+            'operations' => array(
+                'retrieve' => array(
+                    'help' => 'Retrieve a token record',
+                    'callback' => 'behat_editor_services_rest',
+                    'access callback' => 'behat_editor_services_rest_access',
+                    'args' => array(
+                        array(
+                            'name' => 'id',
+                            'type' => 'string',
+                            'description' => 'id or name of report',
+                            'source' => array('path' => '0'),
+                            'optional' => FALSE,
+                        ),
+                    ),
+                ),
+                'index' => array(
+                    'help' => 'Retrieves all user reports for all user sites',
+                    'callback' => 'behat_editor_services_rest',
+                    'access callback' => 'behat_editor_services_rest_access',
+                ),
+            ),
+        ),
     );
 }
 
@@ -258,6 +281,11 @@ function behat_editor_services_rest_access() {
 function behat_editor_services_rest() {
     composer_manager_register_autoloader();
 
+    //Root resource
+    // Sites
+    // Reports
+    $arg1 = arg(1);
+
     //arg 0     = ID of site
     //arg 1     = could be tests, reports, tags, batches
     //arg 2     = could be id of child 1
@@ -266,11 +294,10 @@ function behat_editor_services_rest() {
     $request_type = $_SERVER['REQUEST_METHOD'];
     $args = func_get_args();
     $method                          =   strtolower($request_type);
-    $method                         .=   'Sites';
+    $method                         .=   ucfirst($arg1);
     $request                         =   $_REQUEST;
     _behat_editor_services_process_args($method, $args);
     $route = new BehatEditorServices\BehatEditorRoutes();
-
     $output = null;
     $output = $route->$method($args, $request);
 

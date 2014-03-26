@@ -4,10 +4,18 @@
 class BehatEndPointsTest extends BaseTests {
 
     public static $baseUrl = 'http://b2.vbox.local/behat_editor_services_v2/sites';
+    public static $baseReportsUrl = 'http://b2.vbox.local/behat_editor_services_v2/reports';
 
     public function testEndPointGetSitesAll()
     {
         $request_url = static::$baseUrl;
+        $http_code   = $this->curl($request_url);
+        $this->assertEquals('200', $http_code);
+    }
+
+    public function testEndPointGetReportsAll()
+    {
+        $request_url = static::$baseReportsUrl;
         $http_code   = $this->curl($request_url);
         $this->assertEquals('200', $http_code);
     }

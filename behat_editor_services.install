@@ -6,6 +6,13 @@ function behat_editor_services_install()
 {
     _behat_editor_services_setup_private();
     _behat_editor_services_setup_defaults();
+
+    $tables = behat_editor_schema();
+    foreach($tables as $key => $value) {
+        if(!db_table_exists($key)) {
+            db_create_table($key, $value);
+        }
+    }
 }
 
 function _behat_editor_services_setup_defaults()
@@ -28,4 +35,109 @@ function _behat_editor_services_setup_private()
         variable_set('file_private_path', $public . '/private');
     }
 }
+
+function behat_editor_services_schema() {
+
+    $schema['behat_editor_results'] = array(
+        'description' => 'Save test results for later reference.',
+        'fields' => array(
+            'rid' => array(
+                'type' => 'serial',
+                'description' => 'Result ID',
+                'not null' => TRUE,
+            ),
+            'test_name' => array(
+                'type' => 'varchar',
+                'length' => '255',
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'The File name of test',
+            ),
+            'site_id' => array(
+                'type' => 'int',
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => 'Site ID ideally the UUID if available',
+            ),
+            'results' => array(
+                'type' => 'blob',
+                'size' => 'normal',
+                'description' => 'Serialize results',
+                'serialize' => TRUE,
+            ),
+            'duration' => array(
+                'type' => 'varchar',
+                'length' => '255',
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'Duration output of behat',
+            ),
+            'created' => array(
+                'type' => 'int',
+                'not null' => FALSE,
+                'description' => 'Test created at as Unix timestamp.',
+            ),
+            'status' => array(
+                'type' => 'int',
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => '0 for pass 1 for fail',
+            ),
+            'user_id' => array(
+                'type' => 'int',
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => 'User who ran the test',
+            ),
+            'settings' => array(
+                'type' => 'blob',
+                'size' => 'normal',
+                'description' => 'Settings passed during the test',
+                'serialize' => TRUE,
+            ),
+            'browser' => array(
+                'type' => 'varchar',
+                'length' => '255',
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'The browser used',
+            ),
+            'os' => array(
+                'type' => 'varchar',
+                'length' => '255',
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'The os used',
+            ),
+            'tags' => array(
+                'type' => 'blob',
+                'size' => 'normal',
+                'description' => 'Tags passed during the test',
+                'serialize' => TRUE,
+            ),
+            'url' => array(
+                'type' => 'varchar',
+                'length' => '255',
+                'not null' => TRUE,
+                'default' => '',
+                'description' => 'The URL',
+            ),
+        ),
+        'primary key' => array('rid'),
+    );
+    return $schema;
+}
+
+/**
+ * Add some new tables
+ */
+function behat_editor_services_update_7001() {
+    $tables = behat_editor_services_schema();
+    foreach($tables as $key => $value) {
+        if(!db_table_exists($key)) {
+            db_create_table($key, $value);
+        }
+    }
+}
+
 

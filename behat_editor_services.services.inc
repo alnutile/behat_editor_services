@@ -61,6 +61,25 @@ function behat_editor_services_default_services_endpoint() {
                 ),
             ),
         ),
+        'reports' => array(
+            'operations' => array(
+                'create' => array(
+                    'enabled' => '0',
+                ),
+                'retrieve' => array(
+                    'enabled' => '1',
+                ),
+                'update' => array(
+                    'enabled' => '0',
+                ),
+                'delete' => array(
+                    'enabled' => '0',
+                ),
+                'index' => array(
+                    'enabled' => '1',
+                ),
+            ),
+        ),
     );
     $endpoint->debug = 0;
     $export['behat_editor_services'] = $endpoint;

@@ -29,16 +29,7 @@ class SitesRepository extends ServicesRepository {
         return $user;
     }
 
-    /**
-     * Later this will be more about get sites
-     * for user in Group but this is just to keep
-     * moving on the output
-     * @TODO use UUID as for the above
-     *
-     * @param null $uid
-     * @return array
-     */
-    public function getSitesForUserId($uid = null)
+    public function getSitesForUserId($uid = null, $load_nodes = TRUE)
     {
         ($uid == null) ? $uid = $this->user->uid : null;
         $result = db_query("SELECT * FROM {node} WHERE type LIKE :type AND uid = :uid", array(':type' => $this->type, ':uid' => $uid));
@@ -47,9 +38,14 @@ class SitesRepository extends ServicesRepository {
             $nids['node'][$record->nid] = $record->nid;
         }
         $sites = $this->buildNodeArray($nids, $this);
+        if($load_nodes === FALSE) { return $nids; }
         return $this->preProcessOutput(array($sites));
     }
 
+    /**
+     * @param $nid
+     * @return $this
+     */
     public function getSitesUUIDFromNid($nid)
     {
         $model = $this;

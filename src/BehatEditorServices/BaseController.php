@@ -7,6 +7,12 @@ class BaseController implements BaseControllerInterface  {
 
     }
 
+    static public function getUser()
+    {
+        global $user;
+        return $user;
+    }
+
     public function retrieve($request){}
     public function create($params, $request){}
     public function update($params, $request){}

@@ -37,6 +37,15 @@ class BehatEditorRoutes {
         }
     }
 
+    public function getReports(array $params = null)
+    {
+        if($params[0] == null) {
+            return $this->reportsController->index();
+        } else {
+            return $this->reportsController->retrieve($params[0]);
+        }
+    }
+
     public function getSitesTests(array $params = null)
     {
         if($params[2] == null) {
