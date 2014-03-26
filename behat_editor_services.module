@@ -300,7 +300,6 @@ function behat_editor_services_rest() {
     $route = new BehatEditorServices\BehatEditorRoutes();
     $output = null;
     $output = $route->$method($args, $request);
-
     drupal_json_output($output);
     exit();
 }

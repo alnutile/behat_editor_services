@@ -73,6 +73,39 @@ class BehatReportRepository extends ReportRepository {
     }
 
 
+    public function create($site_id, $test_name, $request)
+    {
+        $sites = $this->getUsersSites([], FALSE);
+        if(!in_array($site_id, $sites['node'])) {
+            return array('data' => null, 'status' => 'error', 'message' => 'You do not have permissions for that site id', 'code' => '403');
+        }
+        $default_request = $this->dataArray();
+        $insert = array_merge($default_request, $request);
+        $result = $this->reportModel->persist($insert);
+        if($result['error'] == 0 && $result['data'] > 0) {
+            return array('data' => $result['data'], 'status' => 'success', 'message' => "Report Inserted", "code" => 201);
+        } else {
+            return array('data' => null, 'status' => 'error', 'message' => "Could not insert data", "code" => 422);
+        }
+    }
+
+    public function update($report_id, $request)
+    {
+        $report = $this->retrieve($request['rid']);
+        if($report) {
+            $result = $this->reportModel->persist($request);
+
+            //@TODO move the results if statement into it's own method to reuse for this all of this
+            if($result['error'] == 0 && $result['data'] > 0) {
+                return array('data' => $result['data'], 'status' => 'success', 'message' => "Report Updated", "code" => 201);
+            } else {
+                return array('data' => null, 'status' => 'error', 'message' => "Could not update data", "code" => 422);
+            }
+        } else {
+            return array('data' => null, 'status' => 'error', 'message' => 'You do not have permissions for that site id', 'code' => '403');
+        }
+    }
+
     private function getUsersSites($params, $load_nodes = TRUE)
     {
         $sites = [];
@@ -85,6 +118,8 @@ class BehatReportRepository extends ReportRepository {
         }
         return $sites;
     }
+
+
 
     static public function getUser()
     {

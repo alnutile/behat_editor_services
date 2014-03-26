@@ -1,6 +1,7 @@
 <?php
 
-use Faker;
+#use Faker;
+
 require_once('behat_editor_services.install');
 /**
  * @file

@@ -32,7 +32,7 @@ function behat_editor_services_default_services_endpoint() {
             'application/x-www-form-urlencoded' => TRUE,
             'application/vnd.php.serialized' => FALSE,
             'application/xml' => FALSE,
-            'multipart/form-data' => FALSE,
+            'multipart/form-data' => TRUE,
             'text/xml' => FALSE,
         ),
     );

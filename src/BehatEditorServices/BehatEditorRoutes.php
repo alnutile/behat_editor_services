@@ -114,8 +114,9 @@ class BehatEditorRoutes {
     }
 
     public function postSitesTestsReports(array $params = null, array $request = null) {
-        
-        return $this->reportsController->create($params, $request);
+        $site_id    = $params[0];
+        $test_name  = $params[2];
+        return $this->reportsController->create([$site_id, $test_name], $request);
     }
 
     public function postSitesBatches(array $params = null, array $request = null) {

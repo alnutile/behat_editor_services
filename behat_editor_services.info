@@ -7,6 +7,7 @@ project = behat_editor
 configure = admin/config/development/behat_editor_services
 dependencies[] = ctools
 dependencies[] = services
+dependencies[] = services_basic_auth
 dependencies[] = rest_server
 dependencies[] = uuid
 features[ctools][] = services:services:3

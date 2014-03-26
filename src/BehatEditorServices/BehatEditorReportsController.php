@@ -1,7 +1,6 @@
 <?php namespace BehatEditorServices;
 
 
-
 class BehatEditorReportsController extends BaseController {
 
     public $siteModel;
@@ -13,14 +12,15 @@ class BehatEditorReportsController extends BaseController {
         $this->user                 = ($user == null) ?  static::getUser() : $user;
     }
 
-    public function create($args, $params)
+    public function create($params, $request)
     {
-        return array(1,2,3,4, 'reports');
+        list($site_id, $test_name) = $params;
+        return $this->reportRepo->create($site_id, $test_name, $request);
     }
 
     public function update($args, $params)
     {
-        return array(1,2,3,'update report');
+        return $this->reportRepo->update($args[4], $args[5]);
     }
 
     public function index(array $params = null)

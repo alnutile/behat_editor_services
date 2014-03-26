@@ -7,7 +7,34 @@ class ReportModel implements Persistence  {
     private $data = array();
 
     function persist($data) {
-        $this->data[] = $data;
+        if(isset($data['rid']) && $data['rid'] > 0) {
+            try {
+                $rid = $data['rid'];
+                unset($data['rid']);
+                $rid = db_update("behat_editor_results")
+                    ->fields($data)
+                    ->condition("rid", $rid, '=')
+                    ->execute();
+                $result = array('error' => 0, 'message' => "Row Updated", 'data' => $rid);
+            }
+            //@TODO reearch the Expections to catch
+            catch (Exception $e) {
+                $result = array('error' => 1, 'message' => $e, 'data' => null);
+                return $result;
+            }
+            return $result;
+        } else {
+            try {
+                $rid = db_insert("behat_editor_results")->fields($data)->execute();
+                $result = array('error' => 0, 'message' => "Row added", 'data' => $rid);
+            }
+            //@TODO reearch the Expections to catch
+            catch (Exception $e) {
+                $result = array('error' => 1, 'message' => $e, 'data' => null);
+                return $result;
+            }
+        }
+        return $result;
     }
 
     function retrieve($id) {
