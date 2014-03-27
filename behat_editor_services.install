@@ -73,8 +73,8 @@ function behat_editor_services_schema() {
                 'description' => 'Duration output of behat',
             ),
             'created' => array(
-                'type' => 'int',
-                'not null' => FALSE,
+                'type' => 'timestamp',
+                'not null' => TRUE,
                 'description' => 'Test created at as Unix timestamp.',
             ),
             'status' => array(

@@ -20,6 +20,7 @@ class BehatReportRepository extends ReportRepository {
 
     public function index()
     {
+
         $reports_all = [];
         $sites = $this->getUsersSites([]);
 
@@ -33,6 +34,7 @@ class BehatReportRepository extends ReportRepository {
     //  call it user member of site or owner type filter
     public function retrieve($report_id)
     {
+
         $reports_all = null;
         $sites = $this->getUsersSites([], FALSE);
         $reports_all = $this->reportModel->retrieve($report_id);

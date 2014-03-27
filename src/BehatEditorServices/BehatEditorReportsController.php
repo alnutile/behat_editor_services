@@ -30,6 +30,7 @@ class BehatEditorReportsController extends BaseController {
 
     public function retrieve($request)
     {
+
         return $this->reportRepo->retrieve($request);
     }
 

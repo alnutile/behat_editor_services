@@ -67,9 +67,9 @@ class ReportModel implements Persistence  {
     public function retrieveBySiteId($id)
     {
         if(is_array($id)) {
-            $results = db_query("SELECT * FROM {behat_editor_results} WHERE site_id IN (:sid)", array(":sid" => $id));
+            $results = db_query("SELECT * FROM {behat_editor_results} WHERE site_id IN (:sid) GROUP BY test_name ORDER BY test_name DESC", array(":sid" => $id));
         } else {
-            $results = db_query("SELECT * FROM {behat_editor_results} WHERE site_id = :sid", array(":sid" => $id));
+            $results = db_query("SELECT * FROM {behat_editor_results} WHERE site_id = :sid GROUP BY test_name ORDER BY test_name DESC", array(":sid" => $id));
         }
 
         return $results->fetchAll();

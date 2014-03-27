@@ -72,8 +72,8 @@ class BehatEditorServicesTest extends BaseTests {
     public function testGetSitesReportsAll()
     {
         $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
-        $this->reportsController->shouldReceive('index')->once()->andReturn('All Reports for Test 2 and Site 1 Mocked');
-        $output = $this->behatRoutes->getSitesTestsReports(array(1, 'tests', '2', 'reports', null, null));
+        $this->reportsController->shouldReceive('retrieveBySiteId')->once()->andReturn('All Reports for Test 2 and Site 1 Mocked');
+        $output = $this->behatRoutes->getSitesReports(array(1, 'tests', '2', 'reports', null, null));
         $this->assertEquals('All Reports for Test 2 and Site 1 Mocked', $output);
     }
 
@@ -84,7 +84,7 @@ class BehatEditorServicesTest extends BaseTests {
     public function testGetSitesReportById()
     {
         $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
-        $this->reportsController->shouldReceive('retrieve')->once()->andReturn('Report 3 for Test 2 and Site 1 Mocked');
+        $this->reportsController->shouldReceive('retrieveBySiteIdAndTestName')->once()->andReturn('Report 3 for Test 2 and Site 1 Mocked');
 
         $output = $this->behatRoutes->getSitesTestsReports(array(1, 'tests', '2', 'reports', '3'));
         $this->assertEquals('Report 3 for Test 2 and Site 1 Mocked', $output);
@@ -93,7 +93,7 @@ class BehatEditorServicesTest extends BaseTests {
     public function testGetSitesReportsTagsX()
     {
         $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
-        $this->reportsController->shouldReceive('retrieve')->once()->andReturn('Report 3 for Test 2 and Site 1 Mocked');
+        $this->reportsController->shouldReceive('retrieveBySiteId')->once()->andReturn('Report 3 for Test 2 and Site 1 Mocked');
         $output = $this->behatRoutes->getSitesReportsTags(array(1, 'tests', '2', 'reports', '3'));
         $this->assertEquals('Report 3 for Test 2 and Site 1 Mocked', $output);
     }
@@ -101,7 +101,7 @@ class BehatEditorServicesTest extends BaseTests {
     public function testGetSitesReportsURLX()
     {
         $this->sitesController->shouldReceive('retrieve')->once()->andReturn('Get Site 10 Mocked');
-        $this->reportsController->shouldReceive('retrieve')->once()->andReturn('Report 3 for Test 2 and Site 1 Mocked');
+        $this->reportsController->shouldReceive('retrieveBySiteId')->once()->andReturn('Report 3 for Test 2 and Site 1 Mocked');
         $output = $this->behatRoutes->getSitesReportsUrls(array(1, 'tests', '2', 'reports', '3'));
         $this->assertEquals('Report 3 for Test 2 and Site 1 Mocked', $output);
     }
