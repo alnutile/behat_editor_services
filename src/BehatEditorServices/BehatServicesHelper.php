@@ -1,7 +1,8 @@
 <?php namespace BehatEditorServices;
 
-use BehatApp\BehatHelper;
 use BehatApp\BehatFeatureModel;
+use BehatApp\BehatHelper;
+use BehatEditorServices\SiteModel;
 use BehatEditorServices\BehatServicesException;
 
 
@@ -21,11 +22,12 @@ class BehatServicesHelper {
     public $behatTestsController;
     public $base_path_of_sites;
     public $base_path_of_site;
+    public $siteModel;
 
     public function __construct(BehatHelper $behelper = null, BehatFeatureModel $behatFeatureModel = null)
     {
-        $this->behelper             = ($behelper == null) ? new BehatHelper() : $behelper;
-        $this->behatFeatureModel    = ($behatFeatureModel == null) ? new BehatFeatureModel() : $behatFeatureModel;
+        $this->behelper                 = ($behelper == null) ? new BehatHelper() : $behelper;
+        $this->behatFeatureModel        = ($behatFeatureModel == null) ? new BehatFeatureModel() : $behatFeatureModel;
 
     }
 
@@ -99,5 +101,6 @@ class BehatServicesHelper {
         $path = drupal_realpath(variable_get('file_private_path')) . '/behat/';
         return $path;
     }
+
 
 }

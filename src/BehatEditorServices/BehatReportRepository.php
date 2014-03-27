@@ -20,7 +20,6 @@ class BehatReportRepository extends ReportRepository {
 
     public function index()
     {
-
         $reports_all = [];
         $sites = $this->getUsersSites([]);
 

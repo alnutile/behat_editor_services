@@ -1,6 +1,5 @@
 <?php namespace BehatEditorServices;
 
-use BehatEditorServices\SiteModel;
 
 class BehatEditorSitesController extends BaseController {
     protected $model;
