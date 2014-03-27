@@ -13,6 +13,15 @@ function behat_editor_services_install()
             db_create_table($key, $value);
         }
     }
+
+    //Add default date
+    // was not sure how to do this in schema
+    db_query('
+        ALTER TABLE {behat_editor_results}
+        MODIFY created TIMESTAMP NOT NULL
+        DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP'
+    );
 }
 
 function _behat_editor_services_setup_defaults()
